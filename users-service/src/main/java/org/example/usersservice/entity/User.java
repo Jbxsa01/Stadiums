@@ -2,7 +2,7 @@ package org.example.usersservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+//rien
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor
 public class User {
