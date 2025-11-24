@@ -1,23 +1,28 @@
 package org.example.usersservice.entity;
 
+import org.example.usersservice.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
-//rien
-@Entity
-@Data @NoArgsConstructor @AllArgsConstructor
-public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Entity
+@Table(name = "users")  // ← IMPORTANT : Cette annotation
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nom;
     private String prenom;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 }

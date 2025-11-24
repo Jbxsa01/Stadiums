@@ -1,8 +1,8 @@
 package org.example.usersservice.controller;
 
-
 import org.example.usersservice.entity.User;
-import org.example.usersservice.service.UserService;
+import org.example.usersservice.enums.Role;
+import org.example.usersservice.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +13,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @PostMapping("/add")
     public User addUser(@RequestBody User user,
-                        @RequestParam String role) {
-        return userService.saveUser(user, role);
+                        @RequestParam Role role) {
+        return userService.addUser(user, role);
     }
 
     @GetMapping
