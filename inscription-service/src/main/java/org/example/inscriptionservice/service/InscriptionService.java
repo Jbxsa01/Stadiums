@@ -1,26 +1,71 @@
 package org.example.inscriptionservice.service;
 
+import org.example.inscriptionservice.client.UserClient;
+import org.example.inscriptionservice.dto.UserResponse;
+import org.example.inscriptionservice.dto.UserResponseWrapper;
 import org.example.inscriptionservice.entity.Inscription;
+import org.example.inscriptionservice.enums.Role;
 import org.example.inscriptionservice.enums.StatutInscription;
 import org.example.inscriptionservice.repository.InscriptionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class InscriptionService {
 
     private final InscriptionRepository inscriptionRepo;
+    private final UserClient userClient;  // ← Injection du client Feign
 
-    // Créer un brouillon d'inscription
+    // Créer un brouillon d'inscription avec validation
     public Inscription createInscription(Inscription inscription) {
+        log.info("Création d'une nouvelle inscription pour doctorant: {}", inscription.getDoctorantId());
+
+        try {
+            // Vérifier le doctorant via Feign
+            UserResponseWrapper doctorantWrapper = userClient.getUserById(inscription.getDoctorantId());
+            UserResponse doctorant = doctorantWrapper.getData();
+            validateUser(doctorant, Role.DOCTORANT);
+            log.info("Doctorant validé: {} {}", doctorant.getPrenom(), doctorant.getNom());
+
+        } catch (Exception e) {
+            log.error("Erreur lors de la récupération du doctorant: {}", e.getMessage());
+            throw new RuntimeException("Doctorant non trouvé ou invalide: " + inscription.getDoctorantId());
+        }
+
+        try {
+            // Vérifier le directeur via Feign
+            UserResponseWrapper directeurWrapper = userClient.getUserById(inscription.getDirecteurId());
+            UserResponse directeur = directeurWrapper.getData();
+            validateUser(directeur, Role.DIRECTEUR);
+            log.info("Directeur validé: {} {}", directeur.getPrenom(), directeur.getNom());
+
+        } catch (Exception e) {
+            log.error("Erreur lors de la récupération du directeur: {}", e.getMessage());
+            throw new RuntimeException("Directeur non trouvé ou invalide: " + inscription.getDirecteurId());
+        }
+
         inscription.setStatut(StatutInscription.BROUILLON);
         inscription.setDateCreation(LocalDateTime.now());
         return inscriptionRepo.save(inscription);
     }
-    // Soumettre l'inscription (doctorant)
+
+    // Méthode de validation
+    private void validateUser(UserResponse user, Role expectedRole) {
+        if (user == null) {
+            throw new RuntimeException("Utilisateur non trouvé");
+        }
+        if (user.getRole() != expectedRole) {
+            throw new RuntimeException("Rôle incorrect. Attendu: " + expectedRole + ", Reçu: " + user.getRole());
+        }
+    }
+
+    // ... reste des méthodes inchangées ...
+
     public Inscription soumettreInscription(Long id) {
         Inscription inscription = getInscriptionById(id);
 
@@ -33,7 +78,6 @@ public class InscriptionService {
         return inscriptionRepo.save(inscription);
     }
 
-    // Validation par le directeur
     public Inscription validerParDirecteur(Long id, Boolean valider, String commentaire) {
         Inscription inscription = getInscriptionById(id);
 
@@ -51,7 +95,6 @@ public class InscriptionService {
         return inscriptionRepo.save(inscription);
     }
 
-    // Validation par l'administration
     public Inscription validerParAdmin(Long id, Boolean valider, String commentaire) {
         Inscription inscription = getInscriptionById(id);
 
@@ -69,43 +112,35 @@ public class InscriptionService {
         return inscriptionRepo.save(inscription);
     }
 
-    // Obtenir toutes les inscriptions
     public List<Inscription> getAllInscriptions() {
         return inscriptionRepo.findAll();
     }
 
-    // Obtenir une inscription par ID
     public Inscription getInscriptionById(Long id) {
         return inscriptionRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Inscription non trouvée"));
     }
 
-    // Obtenir les inscriptions d'un doctorant
     public List<Inscription> getInscriptionsByDoctorant(Long doctorantId) {
         return inscriptionRepo.findByDoctorantId(doctorantId);
     }
 
-    // Obtenir les inscriptions d'un directeur
     public List<Inscription> getInscriptionsByDirecteur(Long directeurId) {
         return inscriptionRepo.findByDirecteurId(directeurId);
     }
 
-    // Obtenir les inscriptions d'une campagne
     public List<Inscription> getInscriptionsByCampagne(Long campagneId) {
         return inscriptionRepo.findByCampagneId(campagneId);
     }
 
-    // Obtenir les inscriptions en attente de validation directeur
     public List<Inscription> getInscriptionsEnAttenteDirecteur() {
         return inscriptionRepo.findByStatut(StatutInscription.SOUMISE);
     }
 
-    // Obtenir les inscriptions en attente de validation admin
     public List<Inscription> getInscriptionsEnAttenteAdmin() {
         return inscriptionRepo.findByStatut(StatutInscription.VALIDEE_DIRECTEUR);
     }
 
-    // Mettre à jour une inscription
     public Inscription updateInscription(Long id, Inscription inscription) {
         Inscription existing = getInscriptionById(id);
 
@@ -121,7 +156,6 @@ public class InscriptionService {
         return inscriptionRepo.save(existing);
     }
 
-    // Supprimer une inscription
     public void deleteInscription(Long id) {
         inscriptionRepo.deleteById(id);
     }
