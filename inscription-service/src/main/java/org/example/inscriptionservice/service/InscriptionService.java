@@ -1,5 +1,6 @@
 package org.example.inscriptionservice.service;
 
+import org.example.inscriptionservice.client.ResilientClient;
 import org.example.inscriptionservice.client.UserClient;
 import org.example.inscriptionservice.dto.UserResponse;
 import org.example.inscriptionservice.dto.UserResponseWrapper;
@@ -19,7 +20,7 @@ import java.util.List;
 public class InscriptionService {
 
     private final InscriptionRepository inscriptionRepo;
-    private final UserClient userClient;  // ← Injection du client Feign
+    private final ResilientClient userClient;  // ← Injection du client Feign
 
     // Créer un brouillon d'inscription avec validation
     public Inscription createInscription(Inscription inscription) {
