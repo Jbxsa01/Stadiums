@@ -1,4 +1,4 @@
-package org.example.inscriptionservice;
+/*package org.example.inscriptionservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +8,21 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
+public class InscriptionServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(InscriptionServiceApplication.class, args);
+    }
+}*/
+package org.example.inscriptionservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients  // ← AJOUTEZ CETTE ANNOTATION
 public class InscriptionServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(InscriptionServiceApplication.class, args);
