@@ -20,15 +20,15 @@ spring:
 
         # ROUTE Inscription Service
         - id: reservation-service
-          uri: lb://INSCRIPTION-SERVICE
+          uri: lb://RESERVATION-SERVICE
           predicates:
-            - Path=/inscription/**
+            - Path=/reservation/**
 
         # ROUTE Soutenance Service
         - id: stadium-service
-          uri: lb://SOUTENANCE-SERVICE
+          uri: lb://STADIUM-SERVICE
           predicates:
-            - Path=/soutenance/**
+            - Path=/stadium/**
 
 
   config:
