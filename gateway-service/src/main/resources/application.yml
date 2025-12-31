@@ -29,6 +29,8 @@ spring:
           uri: lb://STADIUM-SERVICE
           predicates:
             - Path=/stadium/**
+          filters:
+            - StripPrefix=1
 
 
   config:
