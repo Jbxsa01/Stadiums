@@ -1,94 +1,80 @@
 package org.example.inscriptionservice.controller;
 
-import org.example.inscriptionservice.dto.ValidationRequest;
-import org.example.inscriptionservice.entity.Inscription;
-import org.example.inscriptionservice.service.InscriptionService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.example.inscriptionservice.model.Campagne;
+import org.example.inscriptionservice.model.Dossier;
+import org.example.inscriptionservice.model.Candidat;
+import org.example.inscriptionservice.service.CampagneService;
+import org.example.inscriptionservice.service.DossierService;
+import org.example.inscriptionservice.service.CandidatService;
+import org.example.inscriptionservice.service.RegleGestionService;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/inscription/inscriptions")
-@RequiredArgsConstructor
+@RequestMapping("/api/inscription")
 public class InscriptionController {
+    private final CampagneService campagneService;
+    private final DossierService dossierService;
+    private final CandidatService candidatService;
 
-    private final InscriptionService inscriptionService;
+    private final RegleGestionService regleGestionService;
 
-    @PostMapping
-    public ResponseEntity<Inscription> createInscription(@Valid @RequestBody Inscription inscription) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(inscriptionService.createInscription(inscription));
+    public InscriptionController(CampagneService campagneService, DossierService dossierService, CandidatService candidatService, RegleGestionService regleGestionService) {
+        this.campagneService = campagneService;
+        this.dossierService = dossierService;
+        this.candidatService = candidatService;
+        this.regleGestionService = regleGestionService;
+    }
+    // Exemple : Vérifier si le doctorant peut se réinscrire
+    @GetMapping("/candidats/{id}/peut-se-reinscrire")
+    public boolean peutSeReinscrire(@PathVariable Long id, @RequestParam(defaultValue = "false") boolean derogation) {
+        var candidat = candidatService.getAll().stream().filter(c -> c.getId().equals(id)).findFirst().orElse(null);
+        if (candidat == null) return false;
+        // Supposons que la date de première inscription est stockée dans le premier dossier
+        var dossier = candidat.getDossiers().isEmpty() ? null : candidat.getDossiers().get(0);
+        if (dossier == null) return false;
+        // Remplacer par la vraie date d'inscription
+        java.time.LocalDate dateInscription = java.time.LocalDate.now().minusYears(2); // exemple
+        return regleGestionService.peutSeReinscrire(dateInscription, derogation);
     }
 
-    @PostMapping("/{id}/soumettre")
-    public ResponseEntity<Inscription> soumettreInscription(@PathVariable Long id) {
-        return ResponseEntity.ok(inscriptionService.soumettreInscription(id));
+    // Exemple : Vérifier si le doctorant a atteint la durée maximale
+    @GetMapping("/candidats/{id}/alerte-duree-max")
+    public boolean alerteDureeMax(@PathVariable Long id) {
+        var candidat = candidatService.getAll().stream().filter(c -> c.getId().equals(id)).findFirst().orElse(null);
+        if (candidat == null) return false;
+        var dossier = candidat.getDossiers().isEmpty() ? null : candidat.getDossiers().get(0);
+        if (dossier == null) return false;
+        java.time.LocalDate dateInscription = java.time.LocalDate.now().minusYears(6); // exemple
+        return regleGestionService.depasseDureeMax(dateInscription);
     }
 
-    @PostMapping("/{id}/valider-directeur")
-    public ResponseEntity<Inscription> validerParDirecteur(
-            @PathVariable Long id,
-            @Valid @RequestBody ValidationRequest request) {
-        return ResponseEntity.ok(inscriptionService.validerParDirecteur(
-                id, request.getValider(), request.getCommentaire()));
+    // Exemple : Vérifier les prérequis à la soutenance
+    @GetMapping("/candidats/{id}/pre-requis-soutenance")
+    public boolean preRequisSoutenance(@PathVariable Long id) {
+        var candidat = candidatService.getAll().stream().filter(c -> c.getId().equals(id)).findFirst().orElse(null);
+        if (candidat == null) return false;
+        return regleGestionService.preRequisSoutenance(candidat);
     }
 
-    @PostMapping("/{id}/valider-admin")
-    public ResponseEntity<Inscription> validerParAdmin(
-            @PathVariable Long id,
-            @Valid @RequestBody ValidationRequest request) {
-        return ResponseEntity.ok(inscriptionService.validerParAdmin(
-                id, request.getValider(), request.getCommentaire()));
+    @GetMapping("/campagnes")
+    public List<Campagne> getCampagnes() { return campagneService.getAll(); }
+
+    @PostMapping("/campagnes")
+    public Campagne createCampagne(@RequestBody Campagne campagne) { return campagneService.save(campagne); }
+
+    @GetMapping("/dossiers")
+    public List<Dossier> getDossiers() { return dossierService.getAll(); }
+
+    @PostMapping("/dossiers")
+    public Dossier createDossier(@RequestBody Dossier dossier) { return dossierService.save(dossier); }
+
+    @PostMapping("/dossiers/{id}/pieces")
+    public String uploadPiece(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        // TODO: Vérifier format et stocker le fichier
+        return "Fichier reçu: " + file.getOriginalFilename();
     }
 
-    @GetMapping
-    public ResponseEntity<List<Inscription>> getAllInscriptions() {
-        return ResponseEntity.ok(inscriptionService.getAllInscriptions());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Inscription> getInscriptionById(@PathVariable Long id) {
-        return ResponseEntity.ok(inscriptionService.getInscriptionById(id));
-    }
-
-    @GetMapping("/doctorant/{doctorantId}")
-    public ResponseEntity<List<Inscription>> getInscriptionsByDoctorant(@PathVariable Long doctorantId) {
-        return ResponseEntity.ok(inscriptionService.getInscriptionsByDoctorant(doctorantId));
-    }
-
-    @GetMapping("/directeur/{directeurId}")
-    public ResponseEntity<List<Inscription>> getInscriptionsByDirecteur(@PathVariable Long directeurId) {
-        return ResponseEntity.ok(inscriptionService.getInscriptionsByDirecteur(directeurId));
-    }
-
-    @GetMapping("/campagne/{campagneId}")
-    public ResponseEntity<List<Inscription>> getInscriptionsByCampagne(@PathVariable Long campagneId) {
-        return ResponseEntity.ok(inscriptionService.getInscriptionsByCampagne(campagneId));
-    }
-
-    @GetMapping("/attente-directeur")
-    public ResponseEntity<List<Inscription>> getInscriptionsEnAttenteDirecteur() {
-        return ResponseEntity.ok(inscriptionService.getInscriptionsEnAttenteDirecteur());
-    }
-
-    @GetMapping("/attente-admin")
-    public ResponseEntity<List<Inscription>> getInscriptionsEnAttenteAdmin() {
-        return ResponseEntity.ok(inscriptionService.getInscriptionsEnAttenteAdmin());
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Inscription> updateInscription(
-            @PathVariable Long id,
-            @Valid @RequestBody Inscription inscription) {
-        return ResponseEntity.ok(inscriptionService.updateInscription(id, inscription));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteInscription(@PathVariable Long id) {
-        inscriptionService.deleteInscription(id);
-        return ResponseEntity.noContent().build();
-    }
+    // ...autres endpoints pour le circuit de validation, notifications, etc.
 }
