@@ -19,22 +19,19 @@ spring:
             - Path=/users/**
 
         # ROUTE Inscription Service
-        - id: inscription-service
-          uri: lb://INSCRIPTION-SERVICE
+        - id: reservation-service
+          uri: lb://RESERVATION-SERVICE
           predicates:
-            - Path=/inscription/**
+            - Path=/reservation/**
 
         # ROUTE Soutenance Service
-        - id: soutenance-service
-          uri: lb://SOUTENANCE-SERVICE
+        - id: stadium-service
+          uri: lb://STADIUM-SERVICE
           predicates:
-            - Path=/soutenance/**
+            - Path=/stadium/**
+          filters:
+            - StripPrefix=1
 
-        # ROUTE Notification Service
-        - id: notification-service
-          uri: lb://NOTIFICATION-SERVICE
-          predicates:
-            - Path=/notifications/**
 
   config:
     import: optional:configserver:http://localhost:8888
