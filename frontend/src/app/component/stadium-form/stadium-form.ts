@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { StadiumFormService } from './stadium-form.service';
 
 @Component({
   selector: 'app-stadium-form',
@@ -12,7 +13,7 @@ import { CommonModule } from '@angular/common';
 })
 export class StadiumForm {
   stadiumForm: FormGroup;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private stadiumFormService: StadiumFormService) {
     this.stadiumForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
       pricePerHour: [null, [Validators.required, Validators.min(0)]],
@@ -21,6 +22,7 @@ export class StadiumForm {
       location: ['', [Validators.required, Validators.maxLength(200)]],
       available: [true, Validators.required]
     });
+    this.stadiumFormService.setForm(this.stadiumForm);
   }
 
   get f() { return this.stadiumForm.controls; }
