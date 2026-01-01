@@ -1,0 +1,53 @@
+<!-- src/app/components/login/login.component.html -->
+<div class="login-container">
+  <div class="login-card">
+    <h2>Connexion</h2>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="loginRequest.username"
+          required
+          class="form-control"
+          placeholder="Entrez votre nom d'utilisateur"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="loginRequest.password"
+          required
+          class="form-control"
+          placeholder="Entrez votre mot de passe"
+        />
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="loading || !loginForm.valid"
+      >
+        <span *ngIf="loading">Connexion en cours...</span>
+        <span *ngIf="!loading">Se connecter</span>
+      </button>
+
+      <div class="register-link">
+        <p>Pas encore de compte ?
+          <a (click)="goToRegister()">S'inscrire</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

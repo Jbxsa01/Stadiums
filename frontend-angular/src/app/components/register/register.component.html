@@ -1,0 +1,87 @@
+<!-- src/app/components/register/register.component.html -->
+<div class="register-container">
+  <div class="register-card">
+    <h2>Inscription</h2>
+
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="registerRequest.username"
+          required
+          minlength="3"
+          maxlength="50"
+          class="form-control"
+          placeholder="Entrez votre nom d'utilisateur"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="registerRequest.email"
+          required
+          email
+          class="form-control"
+          placeholder="exemple@email.com"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="registerRequest.password"
+          required
+          minlength="6"
+          class="form-control"
+          placeholder="Au moins 6 caractères"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer le mot de passe</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          required
+          class="form-control"
+          placeholder="Répétez votre mot de passe"
+        />
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="loading || !registerForm.valid"
+      >
+        <span *ngIf="loading">Inscription en cours...</span>
+        <span *ngIf="!loading">S'inscrire</span>
+      </button>
+
+      <div class="login-link">
+        <p>Vous avez déjà un compte ?
+          <a (click)="goToLogin()">Se connecter</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

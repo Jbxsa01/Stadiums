@@ -1,4 +1,4 @@
 INSERT INTO stadium (name, price_per_hour, description, image_url, location, available) VALUES
-('Stade National', 120.0, 'Grand stade moderne avec pelouse naturelle.', 'https://example.com/images/stade-national.jpg', 'Paris, France', true),
-('Stade Olympique', 100.0, 'Stade olympique avec piste d’athlétisme.', 'https://example.com/images/stade-olympique.jpg', 'Marseille, France', false),
-('Stade Municipal', 80.0, 'Stade de quartier pour petits événements.', 'https://example.com/images/stade-municipal.jpg', 'Lyon, France', true);
+                                                                                            ('Stade Municipal', 100.00, 'Complexe Sportif Moulay Abdellah', 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500', 'Rabat, Maroc', true),
+                                                                                            ('Terrain Maarif', 80.00, 'Stade de Maarif Moderne', 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=500', 'Casablanca, Maroc', true),
+                                                                                            ('Stade la Marche Verte', 120.00, 'Grand stade avec équipements modernes', 'https://images.unsplash.com/photo-1587329310686-91414b8e3cb7?w=500', 'Marrakech, Maroc', true);

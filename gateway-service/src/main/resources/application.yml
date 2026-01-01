@@ -4,34 +4,39 @@ server:
 spring:
   application:
     name: gateway-service
+
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
           lowerCaseServiceId: true
-      routes:
 
-        # ROUTE Users Service
-        - id: users-service
+      routes:
+        # ROUTE Auth Service
+        - id: auth-service
           uri: lb://USERS-SERVICE
           predicates:
-            - Path=/users/**
+            - Path=/auth/**
 
-        # ROUTE Inscription Service
-        - id: reservation-service
-          uri: lb://RESERVATION-SERVICE
-          predicates:
-            - Path=/reservation/**
-
-        # ROUTE Soutenance Service
+        # ROUTE Stadium Service
         - id: stadium-service
           uri: lb://STADIUM-SERVICE
           predicates:
             - Path=/stadium/**
           filters:
-            - StripPrefix=1
+            - RewritePath=/stadium(?<segment>/?.*), $\{segment}
 
+        # ROUTE Reservation Service
+        - id: reservation-service
+          uri: lb://RESERVATION-SERVICE
+          predicates:
+            - Path=/reservation/**
+          filters:
+            - RewritePath=/reservation(?<segment>/?.*), $\{segment}
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
 
   config:
     import: optional:configserver:http://localhost:8888
@@ -40,3 +45,10 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: DEBUG

@@ -1,0 +1,122 @@
+<!-- src/app/components/reservation-create/reservation-create.component.html -->
+<div class="reservation-container">
+  <div class="reservation-card">
+    <h2>Réserver un Stade</h2>
+
+    <!-- Informations sur le stade -->
+    <div *ngIf="stadium" class="stadium-info">
+      <h3>{{ stadium.name }}</h3>
+      <p class="location">📍 {{ stadium.location }}</p>
+      <p class="price-info">💰 Prix: {{ stadium.pricePerHour }} DH/heure</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #reservationForm="ngForm">
+
+      <!-- CIN -->
+      <div class="form-group">
+        <label for="cin">Numéro CIN *</label>
+        <input
+          type="text"
+          id="cin"
+          name="cin"
+          [(ngModel)]="reservation.cin"
+          required
+          class="form-control"
+          placeholder="Ex: AB123456"
+          maxlength="10"
+        />
+      </div>
+
+      <!-- Upload CIN -->
+      <div class="form-group">
+        <label for="cinFile">Copie de votre CIN (Image/PDF) *</label>
+        <input
+          type="file"
+          id="cinFile"
+          name="cinFile"
+          (change)="onFileSelected($event)"
+          accept="image/*,application/pdf"
+          required
+          class="form-control"
+        />
+        <small *ngIf="cinFile" class="file-info">
+          ✅ Fichier sélectionné: {{ cinFile.name }}
+        </small>
+      </div>
+
+      <!-- Date -->
+      <div class="form-group">
+        <label for="date">Date de réservation *</label>
+        <input
+          type="date"
+          id="date"
+          name="date"
+          [(ngModel)]="reservation.date"
+          required
+          class="form-control"
+          [min]="getTodayDate()"
+        />
+      </div>
+
+      <!-- Heure de début -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="heureDebut">Heure de début *</label>
+          <input
+            type="time"
+            id="heureDebut"
+            name="heureDebut"
+            [(ngModel)]="reservation.heureDebut"
+            required
+            class="form-control"
+          />
+        </div>
+
+        <!-- Heure de fin -->
+        <div class="form-group">
+          <label for="heureFin">Heure de fin *</label>
+          <input
+            type="time"
+            id="heureFin"
+            name="heureFin"
+            [(ngModel)]="reservation.heureFin"
+            required
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <!-- Calcul du prix -->
+      <div *ngIf="calculatePrice() > 0" class="price-calculation">
+        <h4>Prix Total Estimé</h4>
+        <p class="total-price">{{ calculatePrice() }} DH</p>
+      </div>
+
+      <!-- Message d'erreur -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Boutons -->
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          routerLink="/stadiums"
+          [disabled]="loading"
+        >
+          Annuler
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading || !reservationForm.valid || !cinFile"
+        >
+          <span *ngIf="loading">Réservation en cours...</span>
+          <span *ngIf="!loading">Confirmer la réservation</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

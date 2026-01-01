@@ -1,0 +1,42 @@
+<!-- src/app/components/navbar/navbar.component.html -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a routerLink="/stadiums">
+        🏟️ <span>StadiumBook</span>
+      </a>
+    </div>
+
+    <ul class="navbar-menu">
+      <li>
+        <a routerLink="/stadiums" routerLinkActive="active">
+          Stades
+        </a>
+      </li>
+
+      <li *ngIf="isLoggedIn">
+        <a routerLink="/reservations" routerLinkActive="active">
+          Mes Réservations
+        </a>
+      </li>
+
+      <li *ngIf="isAdmin">
+        <a routerLink="/admin" routerLinkActive="active">
+          Administration
+        </a>
+      </li>
+    </ul>
+
+    <div class="navbar-user">
+      <div *ngIf="!isLoggedIn" class="auth-buttons">
+        <a routerLink="/login" class="btn btn-outline">Connexion</a>
+        <a routerLink="/register" class="btn btn-primary">Inscription</a>
+      </div>
+
+      <div *ngIf="isLoggedIn" class="user-menu">
+        <span class="user-name">👤 {{ currentUser?.username }}</span>
+        <button (click)="logout()" class="btn btn-danger">Déconnexion</button>
+      </div>
+    </div>
+  </div>
+</nav>

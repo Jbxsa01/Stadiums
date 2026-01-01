@@ -1,0 +1,64 @@
+<!-- src/app/components/stadium-list/stadium-list.component.html -->
+<div class="stadium-list-container">
+  <div class="header">
+    <h1>Stades Disponibles</h1>
+    <button *ngIf="isAdmin()" class="btn btn-success" routerLink="/admin/stadium/create">
+      + Ajouter un stade
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <p>Chargement des stades...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div class="stadium-grid" *ngIf="!loading && stadiums.length > 0">
+    <div class="stadium-card" *ngFor="let stadium of stadiums">
+      <div class="stadium-image">
+        <img [src]="stadium.imageUrl" [alt]="stadium.name" />
+        <span class="badge" [class.available]="stadium.available" [class.unavailable]="!stadium.available">
+          {{ stadium.available ? 'Disponible' : 'Non disponible' }}
+        </span>
+      </div>
+
+      <div class="stadium-content">
+        <h3>{{ stadium.name }}</h3>
+        <p class="location">📍 {{ stadium.location }}</p>
+        <p class="description">{{ stadium.description }}</p>
+
+        <div class="stadium-footer">
+          <div class="price">
+            <span class="price-label">Prix/heure:</span>
+            <span class="price-value">{{ stadium.pricePerHour }} DH</span>
+          </div>
+
+          <div class="actions">
+            <button
+              class="btn btn-primary"
+              (click)="reserveStadium(stadium)"
+              [disabled]="!stadium.available"
+            >
+              Réserver
+            </button>
+
+            <div *ngIf="isAdmin()" class="admin-actions">
+              <button class="btn btn-sm btn-warning" (click)="editStadium(stadium)">
+                ✏️ Modifier
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="deleteStadium(stadium)">
+                🗑️ Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && stadiums.length === 0" class="no-data">
+    <p>Aucun stade disponible pour le moment.</p>
+  </div>
+</div>
