@@ -1,0 +1,36 @@
+<div class="my-bookings-container">
+  <h2>My Bookings</h2>
+  <div class="bookings-toolbar">
+    <input class="search-input" type="text" placeholder="Search by stadium or name..." [(ngModel)]="searchTerm" />
+    <div class="status-filters">
+      <button class="status-btn" [class.active]="statusFilter === 'ALL'" (click)="setStatusFilter('ALL')">SHOW ALL</button>
+      <button class="status-btn" [class.active]="statusFilter === 'EN_ATTENTE'" (click)="setStatusFilter('EN_ATTENTE')">EN_ATTENTE</button>
+      <button class="status-btn" [class.active]="statusFilter === 'CONFIRMEE'" (click)="setStatusFilter('CONFIRMEE')">CONFIRMÉE</button>
+      <button class="status-btn" [class.active]="statusFilter === 'ANNULEE'" (click)="setStatusFilter('ANNULEE')">ANNULÉE</button>
+    </div>
+  </div>
+  <div *ngIf="loading" class="loading">Loading your reservations...</div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  <div *ngIf="!loading && reservations.length === 0" class="no-data">No bookings found.</div>
+  <div *ngIf="!loading && filteredReservations.length > 0" class="bookings-cards">
+    <div class="booking-card" *ngFor="let reservation of filteredReservations">
+      <div class="booking-card-header">
+        <div class="stadium-name">
+          {{ getStadiumById(reservation.stadeId)?.name || 'Stadium #' + reservation.stadeId }}
+        </div>
+        <div class="booking-status">
+          <span [class]="'status-badge ' + (reservation.statut || '').toLowerCase()">{{ reservation.statut }}</span>
+        </div>
+      </div>
+      <div class="booking-card-body">
+        <div class="booking-info">
+          <div><b>Date:</b> {{ reservation.date }}</div>
+          <div><b>Time:</b> {{ reservation.heureDebut }} - {{ reservation.heureFin }}</div>
+        </div>
+        <div class="booking-actions">
+          <button class="btn btn-ticket" (click)="downloadTicket(reservation)">🎟️ Ticket PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,174 @@
+.bookings-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.search-input {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 24px;
+  font-size: 1em;
+  outline: none;
+  background: #fafafa;
+  transition: border 0.2s;
+}
+.search-input:focus {
+  border-color: #16a085;
+}
+.status-filters {
+  display: flex;
+  gap: 0;
+  background: #f5f5f5;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1.5px solid #e0e0e0;
+}
+.status-btn {
+  background: none;
+  border: none;
+  padding: 10px 22px;
+  font-size: 1em;
+  color: #16a085;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.status-btn.active, .status-btn:hover {
+  background: #16a085;
+  color: #fff;
+}
+.bookings-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.booking-card {
+  background: #f8f8f8;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+  padding: 24px 20px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.booking-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.stadium-name {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #16a085;
+}
+.booking-status .status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.95em;
+  font-weight: 600;
+  background: #e0f7fa;
+  color: #16a085;
+  text-transform: capitalize;
+}
+.status-badge.confirmee {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+.status-badge.annulee {
+  background: #ffebee;
+  color: #c62828;
+}
+.status-badge.en_attente {
+  background: #fffde7;
+  color: #fbc02d;
+}
+.booking-card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+}
+.booking-info {
+  font-size: 1em;
+  color: #333;
+}
+.booking-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.btn-ticket {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: #222;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 10px 18px;
+  box-shadow: 0 2px 8px rgba(67, 233, 123, 0.15);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  border: none;
+  cursor: pointer;
+}
+.btn-ticket:hover {
+  background: linear-gradient(135deg, #38f9d7 0%, #43e97b 100%);
+  color: #111;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 18px rgba(67, 233, 123, 0.18);
+}
+.my-bookings-container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.08);
+  padding: 32px 24px;
+}
+
+h2 {
+  font-size: 2em;
+  font-weight: 700;
+  color: #16a085;
+  margin-bottom: 24px;
+}
+
+.loading, .no-data {
+  text-align: center;
+  color: #888;
+  font-size: 1.1em;
+  margin: 32px 0;
+}
+
+.alert-danger {
+  background: #fee;
+  color: #c33;
+  border: 1px solid #fcc;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.bookings-table th, .bookings-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.bookings-table th {
+  background: #f8f8f8;
+  color: #16a085;
+  font-weight: 700;
+}
+
+.bookings-table tr:last-child td {
+  border-bottom: none;
+}

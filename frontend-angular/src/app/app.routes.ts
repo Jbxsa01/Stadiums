@@ -9,7 +9,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { StadiumListComponent } from './components/stadium-list/stadium-list.component';
 
 // Reservation
+
 import { ReservationCreateComponent } from './components/reservation-create/reservation-create.component';
+import { MyBookingsComponent } from './components/my-bookings/my-bookings.component';
 
 export const routes: Routes = [
   // Redirection par défaut
@@ -22,8 +24,12 @@ export const routes: Routes = [
   // Stades
   { path: 'stadiums', component: StadiumListComponent },
 
+
   // Réservation (par stade)
   { path: 'reservation/:id', component: ReservationCreateComponent },
+
+  // Mes réservations
+  { path: 'my-bookings', component: MyBookingsComponent },
 
   // Autres routes possibles (à venir)
   // { path: 'mes-reservations', component: MyReservationsComponent },

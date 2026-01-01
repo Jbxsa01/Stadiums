@@ -1,0 +1,16 @@
+<div class="dashboard-container">
+  <h1 class="welcome-msg">Bienvenue, <span class="user-name">{{ 'User' }}</span> !</h1>
+  <p class="subtitle">Voulez-vous réserver un stade ou voir vos réservations précédentes ?</p>
+  <div class="dashboard-cards">
+    <div class="dashboard-card" (click)="goToStadiums()">
+      <div class="card-icon">🏟️</div>
+      <div class="card-title">Réserver un stade</div>
+      <div class="card-desc">Trouvez et réservez le terrain parfait pour votre prochain match.</div>
+    </div>
+    <div class="dashboard-card" (click)="goToBookings()">
+      <div class="card-icon">📅</div>
+      <div class="card-title">Voir mes réservations</div>
+      <div class="card-desc">Consultez l'historique de vos réservations et téléchargez vos tickets.</div>
+    </div>
+  </div>
+</div>

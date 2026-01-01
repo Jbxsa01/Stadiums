@@ -1,42 +1,38 @@
 <!-- src/app/components/navbar/navbar.component.html -->
-<nav class="navbar">
-  <div class="navbar-container">
-    <div class="navbar-brand">
-      <a routerLink="/stadiums">
-        🏟️ <span>StadiumBook</span>
+<nav class="side-navbar">
+  <div class="side-navbar-brand">
+    <span class="trophy-icon">🏆</span>
+    <span class="brand-title">FootReserve</span>
+  </div>
+  <ul class="side-navbar-menu">
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <span class="menu-icon">🏠</span> Dashboard
       </a>
+    </li>
+    <li>
+      <a routerLink="/stadiums" routerLinkActive="active">
+        <span class="menu-icon">🏟️</span> Stadiums
+      </a>
+    </li>
+    <li>
+      <a routerLink="/my-bookings" routerLinkActive="active">
+        <span class="menu-icon">📅</span> My Bookings
+      </a>
+    </li>
+  </ul>
+  <div class="side-navbar-user">
+    <div *ngIf="isLoggedIn" class="user-info">
+      <div class="avatar-circle">{{ currentUser?.username?.charAt(0)?.toUpperCase() || 'P' }}</div>
+      <div class="user-details">
+        <div class="user-role">Pro Player</div>
+        <div class="user-email">{{ currentUser?.email || 'sgdfg@gmail.com' }}</div>
+      </div>
+      <button (click)="logout()" class="btn btn-signout">Sign Out</button>
     </div>
-
-    <ul class="navbar-menu">
-      <li>
-        <a routerLink="/stadiums" routerLinkActive="active">
-          Stades
-        </a>
-      </li>
-
-      <li *ngIf="isLoggedIn">
-        <a routerLink="/reservations" routerLinkActive="active">
-          Mes Réservations
-        </a>
-      </li>
-
-      <li *ngIf="isAdmin">
-        <a routerLink="/admin" routerLinkActive="active">
-          Administration
-        </a>
-      </li>
-    </ul>
-
-    <div class="navbar-user">
-      <div *ngIf="!isLoggedIn" class="auth-buttons">
-        <a routerLink="/login" class="btn btn-outline">Connexion</a>
-        <a routerLink="/register" class="btn btn-primary">Inscription</a>
-      </div>
-
-      <div *ngIf="isLoggedIn" class="user-menu">
-        <span class="user-name">👤 {{ currentUser?.username }}</span>
-        <button (click)="logout()" class="btn btn-danger">Déconnexion</button>
-      </div>
+    <div *ngIf="!isLoggedIn" class="auth-buttons">
+      <a routerLink="/login" class="btn btn-outline">Sign In</a>
+      <a routerLink="/register" class="btn btn-primary">Sign Up</a>
     </div>
   </div>
 </nav>

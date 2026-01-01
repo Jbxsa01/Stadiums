@@ -19,39 +19,37 @@
     <div class="stadium-card" *ngFor="let stadium of stadiums">
       <div class="stadium-image">
         <img [src]="stadium.imageUrl" [alt]="stadium.name" />
+        <span class="badge price-badge">
+          {{ stadium.pricePerHour }} DH/hr
+        </span>
         <span class="badge" [class.available]="stadium.available" [class.unavailable]="!stadium.available">
           {{ stadium.available ? 'Disponible' : 'Non disponible' }}
         </span>
       </div>
 
       <div class="stadium-content">
-        <h3>{{ stadium.name }}</h3>
-        <p class="location">📍 {{ stadium.location }}</p>
+        <h3 class="stadium-title">{{ stadium.name }}</h3>
+        <p class="location">
+          <span class="location-icon">📍</span> {{ stadium.location }}
+        </p>
         <p class="description">{{ stadium.description }}</p>
 
-        <div class="stadium-footer">
-          <div class="price">
-            <span class="price-label">Prix/heure:</span>
-            <span class="price-value">{{ stadium.pricePerHour }} DH</span>
-          </div>
+        <div class="actions">
+          <button
+            class="btn btn-success book-btn"
+            (click)="reserveStadium(stadium)"
+            [disabled]="!stadium.available"
+          >
+            Book Now
+          </button>
 
-          <div class="actions">
-            <button
-              class="btn btn-primary"
-              (click)="reserveStadium(stadium)"
-              [disabled]="!stadium.available"
-            >
-              Réserver
+          <div *ngIf="isAdmin()" class="admin-actions">
+            <button class="btn btn-sm btn-warning" (click)="editStadium(stadium)">
+              ✏️ Modifier
             </button>
-
-            <div *ngIf="isAdmin()" class="admin-actions">
-              <button class="btn btn-sm btn-warning" (click)="editStadium(stadium)">
-                ✏️ Modifier
-              </button>
-              <button class="btn btn-sm btn-danger" (click)="deleteStadium(stadium)">
-                🗑️ Supprimer
-              </button>
-            </div>
+            <button class="btn btn-sm btn-danger" (click)="deleteStadium(stadium)">
+              🗑️ Supprimer
+            </button>
           </div>
         </div>
       </div>
