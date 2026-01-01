@@ -39,4 +39,9 @@ public class StadiumService {
         }
         stadiumRepository.deleteById(id);
     }
+
+    public Stadium getStadiumById(Long id) {
+        return stadiumRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stadium not found"));
+    }
 }

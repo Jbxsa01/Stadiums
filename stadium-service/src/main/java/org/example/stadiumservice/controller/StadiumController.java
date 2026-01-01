@@ -21,6 +21,11 @@ public class StadiumController {
         return stadiumService.getAllStadiums();
     }
 
+    @GetMapping("/{id}")
+    public Stadium getStadiumById(@PathVariable Long id) {
+        return stadiumService.getStadiumById(id);
+    }
+
     @PostMapping
     public Stadium createStadium(@RequestBody Stadium stadium) {
         return stadiumService.saveStadium(stadium);
