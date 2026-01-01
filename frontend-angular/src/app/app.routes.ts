@@ -12,10 +12,13 @@ import { StadiumListComponent } from './components/stadium-list/stadium-list.com
 
 import { ReservationCreateComponent } from './components/reservation-create/reservation-create.component';
 import { MyBookingsComponent } from './components/my-bookings/my-bookings.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const routes: Routes = [
   // Redirection par défaut
-  { path: '', redirectTo: '/stadiums', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  // Dashboard
+  { path: 'dashboard', component: DashboardComponent },
 
   // Authentification
   { path: 'login', component: LoginComponent },
