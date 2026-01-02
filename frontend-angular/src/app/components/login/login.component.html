@@ -1,7 +1,11 @@
 <!-- src/app/components/login/login.component.html -->
 <div class="login-container">
   <div class="login-card">
-    <h2>Connexion</h2>
+    <div class="stadium-header">
+      <span class="football-icon"></span>
+      <h2>Connexion FootReserve</h2>
+      <span class="stadium-icon"></span>
+    </div>
 
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
       <div class="form-group">
@@ -36,7 +40,7 @@
 
       <button
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-primary login-btn"
         [disabled]="loading || !loginForm.valid"
       >
         <span *ngIf="loading">Connexion en cours...</span>

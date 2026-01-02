@@ -1,3 +1,50 @@
+.register-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('https://www.lopinion.ma/photo/art/default/89265402-63145295.jpg?v=1749817123') center center/cover no-repeat;
+  z-index: 0;
+  overflow: auto;
+}
+
+.register-container::before,
+.register-container::after {
+  display: none;
+}
+
+.register-card {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border-radius: 20px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  padding: 48px 40px;
+  max-width: 480px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  animation: slideIn 0.5s ease-out;
+}
+
+.stadium-header, .football-icon, .stadium-icon {
+  display: none !important;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 10;
+}
+
+/* Reservation styles */
 .reservation-container {
   display: flex;
   justify-content: center;

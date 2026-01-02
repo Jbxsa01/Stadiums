@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #fff !important;
+}
+
+.reservation-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(30, 144, 255, 0.08);
+  padding: 36px 28px;
+  max-width: 520px;
+  margin: 32px auto;
+}

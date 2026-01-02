@@ -1,55 +1,42 @@
 /* Pages d'authentification - Login & Register */
 
-.login-container,
-.register-container {
+:root {
+  --primary-green
+  --secondary-green: #27ae60;
+  --white: #fff;
+  --gray-dark: #222;
+  --gray-medium: #888;
+  --grass-green: #43a047;
+  --dark-green: #0a3d2c;
+}
+
+.login-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0a3d2c 0%, #16a085 50%, #27ae60 100%);
-  padding: 40px 20px;
-  position: relative;
-  overflow: hidden;
+  background: url('https://www.lopinion.ma/photo/art/default/89265402-63145295.jpg?v=1749817123') center center/cover no-repeat;
+  z-index: 0;
+  overflow: auto;
 }
 
-/* Effet de ballon de football en arrière-plan */
 .login-container::before,
-.register-container::before {
-  content: '⚽';
-  position: absolute;
-  font-size: 20rem;
-  opacity: 0.05;
-  top: -100px;
-  right: -100px;
-  animation: float 6s ease-in-out infinite;
+.login-container::after {
+  display: none;
 }
 
-.login-container::after,
-.register-container::after {
-  content: '⚽';
-  position: absolute;
-  font-size: 15rem;
-  opacity: 0.05;
-  bottom: -80px;
-  left: -80px;
-  animation: float 8s ease-in-out infinite reverse;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-30px) rotate(180deg);
-  }
-}
-
-.login-card,
-.register-card {
-  background: var(--white);
-  padding: 48px 40px;
+.login-card {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
   border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  padding: 48px 40px;
   max-width: 480px;
   width: 100%;
   position: relative;
@@ -68,167 +55,41 @@
   }
 }
 
-.login-card::before,
-.register-card::before {
-  content: '';
-  position: absolute;
+.stadium-header, .football-icon, .stadium-icon {
+  display: none !important;
+}
+
+/* Center the form and ensure navbar is at the top */
+.navbar, .sidebar {
+  position: fixed;
   top: 0;
-  left: 0;
   right: 0;
-  height: 6px;
-  background: linear-gradient(90deg, #f39c12, #e67e22, #f39c12);
-  border-radius: 20px 20px 0 0;
-}
-
-.login-card h2,
-.register-card h2 {
-  text-align: center;
-  margin-bottom: 12px;
-  color: var(--gray-dark);
-  font-size: 2rem;
-  font-weight: 800;
-}
-
-.login-card h2::before,
-.register-card h2::before {
-  content: '⚽ ';
-  font-size: 2.5rem;
-  vertical-align: middle;
-}
-
-.form-subtitle {
-  text-align: center;
-  color: var(--gray-medium);
-  margin-bottom: 32px;
-  font-size: 0.95rem;
-}
-
-.form-group {
-  margin-bottom: 24px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  color: #555;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.form-control {
-  width: 100%;
-  padding: 14px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: all 0.3s;
-  background: #fafafa;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--primary-green);
-  box-shadow: 0 0 0 3px rgba(22, 160, 133, 0.1);
-  background: var(--white);
-}
-
-.alert {
-  padding: 14px 16px;
-  border-radius: 10px;
-  margin-bottom: 24px;
-  font-weight: 500;
+  left: auto;
+  width: auto;
+  min-width: 220px;
+  max-width: 320px;
+  height: 64px;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 2px 16px rgba(31,38,135,0.12);
+  border-bottom-left-radius: 18px;
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.alert::before {
-  font-size: 1.2rem;
-}
-
-.alert-danger {
-  background: linear-gradient(135deg, #fee, #fdd);
-  color: #c33;
-  border: 2px solid #fcc;
-}
-
-.alert-danger::before {
-  content: '⚠️';
-}
-
-.alert-success {
-  background: linear-gradient(135deg, #d4edda, #c3e6cb);
-  color: #155724;
-  border: 2px solid #a3d4ab;
-}
-
-.alert-success::before {
-  content: '✅';
-}
-
-.btn {
-  width: 100%;
-  padding: 14px 24px;
-  border: none;
-  border-radius: 10px;
+  justify-content: flex-end;
+  padding: 0 32px;
+  z-index: 20;
+  font-weight: 700;
   font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #16a085, #27ae60);
-  color: var(--white);
-  box-shadow: 0 4px 16px rgba(22, 160, 133, 0.3);
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #27ae60, #16a085);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(22, 160, 133, 0.4);
-}
-
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-.login-link,
-.register-link {
-  text-align: center;
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid #e0e0e0;
-}
-
-.login-link p,
-.register-link p {
-  color: #666;
-  font-size: 0.95rem;
-  margin: 0;
-}
-
-.login-link a,
-.register-link a {
-  color: var(--primary-green);
-  text-decoration: none;
-  font-weight: 700;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.login-link a:hover,
-.register-link a:hover {
-  color: var(--dark-green);
-  text-decoration: underline;
-}
-
-/* Responsive */
 @media (max-width: 600px) {
+  .navbar, .sidebar {
+    min-width: 120px;
+    padding: 0 10px;
+    font-size: 0.95rem;
+  }
+
   .login-container,
   .register-container {
     padding: 20px;
@@ -252,4 +113,48 @@
     padding: 12px 20px;
     font-size: 1rem;
   }
+}
+
+.login-card h2 {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--dark-green);
+  letter-spacing: 1px;
+  margin: 0;
+  background: linear-gradient(135deg, #16a085, #27ae60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-btn {
+  margin-top: 18px;
+  width: 100%;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #16a085 60%, #27ae60 100%);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(22, 160, 133, 0.15);
+  transition: background 0.3s, transform 0.2s;
+}
+.login-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, #27ae60 60%, #16a085 100%);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.register-link {
+  margin-top: 24px;
+  text-align: center;
+}
+.register-link a {
+  color: var(--primary-green);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.register-link a:hover {
+  color: var(--secondary-green);
 }

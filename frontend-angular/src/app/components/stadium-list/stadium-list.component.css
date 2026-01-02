@@ -2,6 +2,9 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 40px 24px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(30, 144, 255, 0.08);
 }
 
 .page-header {
@@ -106,16 +109,17 @@
 }
 
 .stadium-card {
-  background: var(--white);
-  border-radius: 20px;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-sm);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(30, 144, 255, 0.07);
+  margin-bottom: 28px;
+  padding: 0 0 18px 0;
+  transition: box-shadow 0.2s;
 }
 
 .stadium-card:hover {
   transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 6px 24px rgba(30, 144, 255, 0.13);
 }
 
 .stadium-image {
@@ -129,6 +133,7 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.4s ease;
+  border-radius: 16px 16px 0 0;
 }
 
 .stadium-card:hover .stadium-image img {
@@ -246,6 +251,18 @@
 
 .btn-book {
   flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.btn-book .icon {
+  width: 22px;
+  height: 22px;
+  font-size: 1.1rem;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
 .admin-actions {
