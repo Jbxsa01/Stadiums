@@ -1,38 +1,105 @@
 <!-- src/app/components/navbar/navbar.component.html -->
 <nav class="side-navbar">
-  <div class="side-navbar-brand">
-    <span class="trophy-icon">🏆</span>
-    <span class="brand-title">FootReserve</span>
+  <div class="navbar-brand">
+    <div class="brand-content">
+      <div class="brand-icon">⚽</div>
+      <div class="brand-text">
+        <h1>FootReserve</h1>
+        <p>Stadium Booking</p>
+      </div>
+    </div>
   </div>
-  <ul class="side-navbar-menu">
+
+  <!-- Menu pour ADMIN -->
+  <ul class="navbar-menu" *ngIf="isAdmin">
     <li>
-      <a routerLink="/dashboard" routerLinkActive="active">
-        <span class="menu-icon">🏠</span> Dashboard
+      <a routerLink="/admin/dashboard" routerLinkActive="active">
+        <span class="menu-icon">🎯</span>
+        <span class="menu-text">Admin Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/admin/stadium/create" routerLinkActive="active">
+        <span class="menu-icon">➕</span>
+        <span class="menu-text">Add Stadium</span>
       </a>
     </li>
     <li>
       <a routerLink="/stadiums" routerLinkActive="active">
-        <span class="menu-icon">🏟️</span> Stadiums
+        <span class="menu-icon">🏟️</span>
+        <span class="menu-text">All Stadiums</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/admin/reservations" routerLinkActive="active">
+        <span class="menu-icon">📋</span>
+        <span class="menu-text">Manage Bookings</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Menu pour USER -->
+  <ul class="navbar-menu" *ngIf="!isAdmin && isLoggedIn">
+    <li>
+      <a routerLink="/dashboard" routerLinkActive="active">
+        <span class="menu-icon">🏠</span>
+        <span class="menu-text">Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/stadiums" routerLinkActive="active">
+        <span class="menu-icon">🏟️</span>
+        <span class="menu-text">Stadiums</span>
       </a>
     </li>
     <li>
       <a routerLink="/my-bookings" routerLinkActive="active">
-        <span class="menu-icon">📅</span> My Bookings
+        <span class="menu-icon">📅</span>
+        <span class="menu-text">My Bookings</span>
       </a>
     </li>
   </ul>
-  <div class="side-navbar-user">
-    <div *ngIf="isLoggedIn" class="user-info">
-      <div class="avatar-circle">{{ currentUser?.username?.charAt(0)?.toUpperCase() || 'P' }}</div>
-      <div class="user-details">
-        <div class="user-role">Pro Player</div>
-        <div class="user-email">{{ currentUser?.email || 'sgdfg@gmail.com' }}</div>
+
+  <!-- Menu pour visiteur non connecté -->
+  <ul class="navbar-menu" *ngIf="!isLoggedIn">
+    <li>
+      <a routerLink="/stadiums" routerLinkActive="active">
+        <span class="menu-icon">🏟️</span>
+        <span class="menu-text">Stadiums</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Footer avec info utilisateur -->
+  <div class="navbar-footer">
+    <div *ngIf="isLoggedIn" class="user-section">
+      <div class="user-profile">
+        <div class="user-avatar">
+          {{ currentUser?.username?.charAt(0)?.toUpperCase() || 'U' }}
+        </div>
+        <div class="user-info">
+          <p class="user-name">{{ currentUser?.username }}</p>
+          <p class="user-email">{{ currentUser?.email }}</p>
+          <span class="user-role-badge" [class.admin-badge]="isAdmin">
+            {{ isAdmin ? '👑 Admin' : '👤 User' }}
+          </span>
+        </div>
       </div>
-      <button (click)="logout()" class="btn btn-signout">Sign Out</button>
+      <button (click)="logout()" class="btn btn-logout">
+        <span class="menu-icon">🚪</span>
+        <span class="menu-text">Logout</span>
+      </button>
     </div>
+
     <div *ngIf="!isLoggedIn" class="auth-buttons">
-      <a routerLink="/login" class="btn btn-outline">Sign In</a>
-      <a routerLink="/register" class="btn btn-primary">Sign Up</a>
+      <a routerLink="/login" class="btn btn-secondary">
+        <span class="menu-icon">🔐</span>
+        <span class="menu-text">Sign In</span>
+      </a>
+      <a routerLink="/register" class="btn btn-primary">
+        <span class="menu-icon">✍️</span>
+        <span class="menu-text">Sign Up</span>
+      </a>
     </div>
   </div>
 </nav>

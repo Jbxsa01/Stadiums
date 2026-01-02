@@ -2,8 +2,8 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
+import { tap, catchError, delay } from 'rxjs/operators';
 import { RegisterRequest, LoginRequest, AuthResponse } from '../models/user.model';
 import { environment } from '../environments/environment';
 
@@ -14,6 +14,27 @@ export class AuthService {
   private apiUrl = (environment as any).authUrl ?? `${environment.apiUrl}/auth`;
   private currentUserSubject: BehaviorSubject<AuthResponse | null>;
   public currentUser: Observable<AuthResponse | null>;
+
+  // 🔥 MODE MOCK pour la soutenance
+  private useMockAuth = true;
+
+  // 👤 Utilisateurs mock (pour démo)
+  private mockUsers = [
+    {
+      userId: 1,
+      username: 'admin',
+      email: 'admin@footreserve.com',
+      password: 'admin123',
+      role: 'ADMIN'
+    },
+    {
+      userId: 2,
+      username: 'user',
+      email: 'user@test.com',
+      password: 'user123',
+      role: 'USER'
+    }
+  ];
 
   constructor(
     private http: HttpClient,
@@ -34,7 +55,40 @@ export class AuthService {
   }
 
   register(request: RegisterRequest): Observable<AuthResponse> {
-    // ✅ CORRIGÉ : Utilisation correcte des backticks
+    if (this.useMockAuth) {
+      console.log('📦 MOCK: Registration attempt', request);
+
+      // Vérifier si l'utilisateur existe déjà
+      const userExists = this.mockUsers.find(u =>
+        u.username === request.username || u.email === request.email
+      );
+
+      if (userExists) {
+        return throwError(() => new Error('Nom d\'utilisateur ou email déjà utilisé'));
+      }
+
+      // Créer un nouvel utilisateur
+      const newUser = {
+        userId: this.mockUsers.length + 1,
+        username: request.username,
+        email: request.email,
+        password: request.password,
+        role: 'USER'
+      };
+
+      this.mockUsers.push(newUser);
+
+      const response: AuthResponse = {
+        userId: newUser.userId,
+        username: newUser.username,
+        email: newUser.email,
+        role: newUser.role,
+        message: 'Inscription réussie'
+      };
+
+      return of(response).pipe(delay(500));
+    }
+
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, request)
       .pipe(
         tap(response => {
@@ -45,11 +99,39 @@ export class AuthService {
   }
 
   login(request: LoginRequest): Observable<AuthResponse> {
-    // ✅ CORRIGÉ : Utilisation correcte des backticks
+    if (this.useMockAuth) {
+      console.log('📦 MOCK: Login attempt', request);
+
+      // Chercher l'utilisateur dans les données mock
+      const user = this.mockUsers.find(u =>
+        u.username === request.username && u.password === request.password
+      );
+
+      if (!user) {
+        return throwError(() => new Error('Nom d\'utilisateur ou mot de passe incorrect'));
+      }
+
+      const response: AuthResponse = {
+        userId: user.userId,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        message: 'Connexion réussie'
+      };
+
+      // Stocker dans localStorage
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('currentUser', JSON.stringify(response));
+      }
+      this.currentUserSubject.next(response);
+
+      console.log(`✅ Login successful as ${user.role}:`, response);
+      return of(response).pipe(delay(500));
+    }
+
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request)
       .pipe(
         tap(response => {
-          // Stocker les infos utilisateur
           if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('currentUser', JSON.stringify(response));
           }
@@ -60,8 +142,16 @@ export class AuthService {
       );
   }
 
-  logout(userId: number): Observable<string> {
-    // ✅ CORRIGÉ : Utilisation correcte des backticks
+  logout(userId?: number): Observable<string> {
+    if (this.useMockAuth) {
+      console.log('📦 MOCK: Logout');
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.removeItem('currentUser');
+      }
+      this.currentUserSubject.next(null);
+      return of('Déconnexion réussie').pipe(delay(200));
+    }
+
     return this.http.post<string>(`${this.apiUrl}/logout/${userId}`, {})
       .pipe(
         tap(() => {
@@ -87,10 +177,8 @@ export class AuthService {
     let errorMessage = 'Une erreur est survenue';
 
     if (error.error instanceof ErrorEvent) {
-      // Erreur côté client
       errorMessage = `Erreur: ${error.error.message}`;
     } else {
-      // Erreur côté serveur
       if (error.error && typeof error.error === 'object') {
         errorMessage = error.error.error || error.error.message || errorMessage;
       } else if (typeof error.error === 'string') {
