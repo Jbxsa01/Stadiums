@@ -1,186 +1,694 @@
-/* src/app/components/reservation-create/reservation-create.component.css */
-.reservation-container {
+/* =====================
+   VARIABLES & IMPORTS
+===================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary-color: #22c55e;
+  --primary-hover: #16a34a;
+  --secondary-color: #0f172a;
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --background: #f8fafc;
+  --card-bg: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+/* =====================
+   GENERAL RESET
+===================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--background);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* =====================
+   NAVBAR
+===================== */
+.side-navbar {
+  width: 260px;
+  height: 100vh;
+  background: var(--secondary-color);
+  color: #fff;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  padding: 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+.navbar-brand {
+  display: flex;
   align-items: center;
+  gap: 12px;
+  margin-bottom: 48px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--primary-color), #16a34a);
+  color: #fff;
+  font-weight: 800;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(34,197,94,0.3);
+}
+
+.brand-text {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* MENU NAVIGATION */
+.navbar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 auto 0;
+}
+
+.navbar-menu li {
+  margin-bottom: 8px;
+}
+
+.navbar-menu a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: #cbd5e1;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.navbar-menu a:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.navbar-menu a.active {
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+/* USER SECTION */
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, var(--primary-color), #16a34a);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.3);
+}
+
+.btn-logout {
+  padding: 10px 18px;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: var(--radius-sm);
+  color: #fca5a5;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+  background: var(--danger-color);
+  color: #fff;
+  border-color: var(--danger-color);
+}
+
+/* AUTH BUTTONS */
+.navbar-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-login {
+  background: transparent;
+  border: 1px solid rgba(34,197,94,0.5);
+  color: var(--primary-color);
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-login:hover {
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-register {
+  background: var(--primary-color);
+  color: var(--secondary-color);
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-register:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34,197,94,0.3);
+}
+
+/* =====================
+   FORMULAIRE PRINCIPAL - CORRECTION CENTRAGE
+===================== */
+.reservation-container {
+  margin-left: 260px; /* Espace pour la sidebar */
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 40px 20px;
+  width: calc(100% - 260px); /* Largeur calculée correctement */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  background: var(--background);
 }
 
 .reservation-card {
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  max-width: 600px;
+  background: var(--card-bg);
+  padding: 48px 56px;
+  border-radius: var(--radius-lg);
   width: 100%;
+  max-width: 700px;
+  margin: 0 auto; /* Centrage horizontal forcé */
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  position: relative;
+
 }
 
-.reservation-card h2 {
+/* PAGE TITLE */
+.page-title {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-  font-size: 28px;
+  margin: 0 0 40px 0;
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  position: relative;
+  padding-bottom: 20px;
 }
 
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), #16a34a);
+  border-radius: 2px;
+}
+
+/* =====================
+   STADIUM INFO CARD
+===================== */
 .stadium-info {
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 30px;
-  border-left: 4px solid #667eea;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin-bottom: 36px;
+  border: 1px solid #bbf7d0;
+  box-shadow: var(--shadow-sm);
 }
 
 .stadium-info h3 {
-  margin: 0 0 10px 0;
-  color: #333;
-  font-size: 22px;
+  margin: 0 0 20px 0;
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.stadium-info .location {
-  color: #666;
-  margin: 5px 0;
-  font-size: 14px;
+.stadium-info h3::before {
+  content: '⚽';
+  font-size: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
-.stadium-info .price-info {
-  color: #667eea;
-  font-weight: 600;
-  margin: 5px 0;
-  font-size: 16px;
+.stadium-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  color: #166534;
+  font-weight: 500;
+}
+
+.meta-item .icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(34,197,94,0.15);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  color: #15803d;
+}
+
+.meta-item.price {
+  color: #15803d;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+/* =====================
+   FORM ELEMENTS
+===================== */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 26px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
-  color: #555;
-  font-weight: 500;
+  margin-bottom: 10px;
+  font-weight: 600;
   font-size: 14px;
+  color: var(--text-primary);
+  letter-spacing: 0.2px;
 }
 
 .form-control {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.3s;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border-color);
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: #fff;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.form-control:hover {
+  border-color: #cbd5e1;
 }
 
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(34,197,94,0.1);
+  background: #fff;
 }
 
+.form-control::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* FILE INPUT STYLING */
+.form-control[type="file"] {
+  padding: 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.form-control[type="file"]::file-selector-button {
+  padding: 10px 20px;
+  background: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: all 0.2s ease;
+}
+
+.form-control[type="file"]::file-selector-button:hover {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+/* FILE INFO */
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 12px 16px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: #15803d;
+}
+
+.file-info::before {
+  content: '✓';
+  width: 22px;
+  height: 22px;
+  background: var(--primary-color);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* FORM ROW (2 colonnes) */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+  margin-bottom: 26px;
 }
 
-.file-info {
-  display: block;
-  margin-top: 8px;
-  color: #4caf50;
-  font-size: 13px;
+/* =====================
+   PRICE BOX
+===================== */
+.price-box {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 2px solid #6ee7b7;
+  border-radius: var(--radius-md);
+  padding: 22px 28px;
+  margin: 28px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
 }
 
-.price-calculation {
-  background: #e8f5e9;
-  padding: 20px;
-  border-radius: 8px;
-  margin: 20px 0;
-  text-align: center;
-  border: 2px solid #4caf50;
-}
-
-.price-calculation h4 {
-  margin: 0 0 10px 0;
-  color: #2e7d32;
+.price-box span {
   font-size: 16px;
+  font-weight: 600;
+  color: #065f46;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.total-price {
-  font-size: 32px;
-  font-weight: 700;
-  color: #1b5e20;
-  margin: 0;
+.price-box strong {
+  font-size: 26px;
+  font-weight: 800;
+  color: #047857;
+  letter-spacing: -0.5px;
 }
 
-.alert {
-  padding: 12px;
-  border-radius: 6px;
-  margin-bottom: 20px;
+/* =====================
+   ALERTS
+===================== */
+.alert-error {
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.alert-danger {
-  background-color: #fee;
-  color: #c33;
-  border: 1px solid #fcc;
+.alert-error::before {
+  content: '⚠';
+  font-size: 18px;
+  color: #dc2626;
+  flex-shrink: 0;
 }
 
+/* =====================
+   FORM ACTIONS
+===================== */
 .form-actions {
   display: flex;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 16px;
+  margin-top: 36px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border-color);
 }
 
 .btn {
   flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
+  padding: 16px 28px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 15px;
   cursor: pointer;
-  transition: all 0.3s;
+  border: none;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+.btn-cancel {
+  background: #f1f5f9;
+  color: #475569;
+  border: 2px solid var(--border-color);
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-cancel:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
   transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.btn-secondary {
-  background: #6c757d;
-  color: white;
+.btn-confirm {
+  background: linear-gradient(135deg, var(--primary-color), #16a34a);
+  color: dimgrey;
+  box-shadow: 0 4px 16px rgba(34,197,94,0.35);
 }
 
-.btn-secondary:hover:not(:disabled) {
-  background: #5a6268;
+.btn-confirm:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(34,197,94,0.45);
 }
 
 .btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none !important;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+.btn:active:not(:disabled) {
+  transform: translateY(0) !important;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+@media (max-width: 1024px) {
+  .side-navbar {
+    width: 240px;
+  }
+
+  .reservation-container {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+  }
+
   .reservation-card {
-    padding: 25px;
+    padding: 40px 44px;
+    max-width: 650px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reservation-container {
+    margin-left: 0;
+    width: 100%;
+    padding: 30px 20px;
+  }
+
+  .reservation-card {
+    padding: 36px 28px;
+    max-width: 100%;
+  }
+
+  .page-title {
+    font-size: 28px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .form-actions {
     flex-direction: column;
   }
 
-  .total-price {
-    font-size: 28px;
+  .stadium-meta {
+    gap: 12px;
   }
+
+  .stadium-info {
+    padding: 24px;
+  }
+
+  .stadium-info h3 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reservation-card {
+    padding: 28px 20px;
+  }
+
+  .page-title {
+    font-size: 24px;
+    margin-bottom: 32px;
+  }
+
+  .stadium-info {
+    padding: 20px;
+  }
+
+  .stadium-info h3 {
+    font-size: 20px;
+  }
+
+  .btn {
+    padding: 14px 24px;
+    font-size: 14px;
+  }
+
+  .price-box {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .form-control {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+}
+
+/* =====================
+   ANIMATIONS
+===================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.reservation-card {
+  animation: fadeIn 0.5s ease;
+}
+
+.form-group {
+  animation: slideIn 0.3s ease backwards;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.05s; }
+.form-group:nth-child(2) { animation-delay: 0.1s; }
+.form-group:nth-child(3) { animation-delay: 0.15s; }
+.form-group:nth-child(4) { animation-delay: 0.2s; }
+
+/* FOCUS VISIBLE (Accessibilité) */
+*:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+/* Spinner animation pour loading */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
 }

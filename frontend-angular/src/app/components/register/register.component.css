@@ -1,3 +1,15 @@
+/* Register Component Styles */
+
+:root {
+  --primary-green: #16a085;
+  --secondary-green: #27ae60;
+  --white: #fff;
+  --gray-dark: #222;
+  --gray-medium: #888;
+  --grass-green: #43a047;
+  --dark-green: #0a3d2c;
+}
+
 .register-container {
   position: fixed;
   top: 0;
@@ -7,12 +19,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url('https://www.lopinion.ma/photo/art/default/89265402-63145295.jpg?v=1749817123') center center/cover no-repeat;
+  background: url('https://i.pinimg.com/1200x/48/7e/a4/487ea4998ba41d602f00bd8d9e40c369.jpg') center center/cover no-repeat;
   z-index: 0;
   overflow: auto;
 }
 
-.register-container::before,
+.register-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 0;
+}
+
 .register-container::after {
   display: none;
 }
@@ -25,23 +47,246 @@
   border-radius: 20px;
   border: 1.5px solid rgba(255, 255, 255, 0.25);
   padding: 48px 40px;
-  max-width: 480px;
+  max-width: 520px;
   width: 100%;
   position: relative;
   z-index: 1;
   animation: slideIn 0.5s ease-out;
+  margin: 20px;
 }
 
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-card h2 {
+  text-align: center;
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: 1px;
+  margin: 0 0 32px 0;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 16px 14px 46px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  background: rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
+  color: var(--white);
+}
+
+.form-group::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 42px;
+  width: 18px;
+  height: 18px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.form-group:nth-of-type(1)::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E");
+}
+
+.form-group:nth-of-type(2)::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z'/%3E%3Cpolyline points='22,6 12,13 2,6'/%3E%3C/svg%3E");
+}
+
+.form-group:nth-of-type(3)::after,
+.form-group:nth-of-type(4)::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2' ry='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E");
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.form-group:focus-within::after {
+  opacity: 1;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Alert Styles */
+.alert {
+  padding: 14px 16px 14px 46px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  position: relative;
+}
+
+.alert::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.alert-danger {
+  background: rgba(255, 51, 51, 0.15);
+  color: #fff;
+  border: 2px solid rgba(255, 102, 102, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.alert-danger::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='15' y1='9' x2='9' y2='15'/%3E%3Cline x1='9' y1='9' x2='15' y2='15'/%3E%3C/svg%3E");
+}
+
+.alert-success {
+  background: rgba(39, 174, 96, 0.15);
+  color: #fff;
+  border: 2px solid rgba(39, 174, 96, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.alert-success::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'/%3E%3Cpolyline points='22 4 12 14.01 9 11.01'/%3E%3C/svg%3E");
+}
+
+/* Button Styles */
+.btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #16a085 0%, #27ae60 100%);
+  color: var(--white);
+  box-shadow: 0 6px 20px rgba(22, 160, 133, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #27ae60 0%, #16a085 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(22, 160, 133, 0.4);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Login Link */
+.login-link {
+  margin-top: 28px;
+  text-align: center;
+  padding-top: 24px;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-link p {
+  color: var(--white);
+  font-size: 0.95rem;
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.login-link a {
+  color: #27ae60;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.login-link a:hover {
+  color: #2ecc71;
+  border-bottom-color: #2ecc71;
+}
+
+/* Hide elements */
 .stadium-header, .football-icon, .stadium-icon {
   display: none !important;
 }
 
+/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   z-index: 10;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .register-container {
+    padding: 20px 10px;
+  }
+
+  .register-card {
+    padding: 36px 28px;
+    margin: 10px;
+  }
+
+  .register-card h2 {
+    font-size: 1.8rem;
+  }
+
+  .form-control {
+    padding: 12px 14px 12px 42px;
+  }
+
+  .btn {
+    padding: 14px;
+    font-size: 1rem;
+  }
 }
 
 /* Reservation styles */
@@ -62,17 +307,7 @@
   max-width: 700px;
   width: 100%;
   animation: slideIn 0.5s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  position: relative;
 }
 
 .reservation-card::before {
@@ -98,7 +333,6 @@
   background-clip: text;
 }
 
-/* Info stade */
 .stadium-info {
   background: linear-gradient(135deg, rgba(22, 160, 133, 0.08), rgba(39, 174, 96, 0.08));
   padding: 24px;
@@ -131,36 +365,6 @@
   font-size: 1.1rem;
 }
 
-/* Form */
-.form-group {
-  margin-bottom: 24px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  color: #555;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.form-control {
-  width: 100%;
-  padding: 14px 16px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: all 0.3s;
-  background: #fafafa;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--primary-green);
-  box-shadow: 0 0 0 3px rgba(22, 160, 133, 0.1);
-  background: var(--white);
-}
-
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -175,7 +379,6 @@
   font-weight: 600;
 }
 
-/* Calcul prix */
 .price-calculation {
   background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(22, 160, 133, 0.1));
   padding: 24px;
@@ -209,47 +412,10 @@
   color: var(--dark-green);
 }
 
-/* Alerts */
-.alert-danger {
-  background: linear-gradient(135deg, #fee, #fdd);
-  color: #c33;
-  border: 2px solid #fcc;
-  padding: 14px 16px;
-  border-radius: 10px;
-  margin-bottom: 24px;
-  font-weight: 500;
-}
-
-/* Actions */
 .form-actions {
   display: flex;
   gap: 16px;
   margin-top: 32px;
-}
-
-.btn {
-  flex: 1;
-  padding: 14px 24px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #16a085, #27ae60);
-  color: var(--white);
-  box-shadow: 0 4px 16px rgba(22, 160, 133, 0.3);
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #27ae60, #16a085);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(22, 160, 133, 0.4);
 }
 
 .btn-secondary {
@@ -264,13 +430,6 @@
   box-shadow: 0 6px 24px rgba(149, 165, 166, 0.4);
 }
 
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   .reservation-container {
     padding: 40px 20px;

@@ -1,84 +1,67 @@
 <!-- src/app/components/navbar/navbar.component.html -->
 <nav class="side-navbar">
-  <div class="navbar-brand">
-    <div class="brand-content">
-      <div class="brand-icon">⚽</div>
-      <div class="brand-text">
-        <h1>FootReserve</h1>
-        <p>Stadium Booking</p>
-      </div>
-    </div>
-  </div>
-
   <div class="navbar-content-flex">
-    <div class="navbar-left">
-      <!-- Menu pour ADMIN -->
-      <ul class="navbar-menu" *ngIf="isAdmin">
-        <li>
-          <a routerLink="/admin/dashboard" routerLinkActive="active">
-            <span class="menu-text">Admin Dashboard</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="/admin/stadium/create" routerLinkActive="active">
-            <span class="menu-text">Add Stadium</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="/stadiums" routerLinkActive="active">
-            <span class="menu-text">All Stadiums</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="/admin/reservations" routerLinkActive="active">
-            <span class="menu-text">Manage Bookings</span>
-          </a>
-        </li>
-      </ul>
 
-      <!-- Menu pour USER -->
-      <ul class="navbar-menu" *ngIf="!isAdmin && isLoggedIn">
-        <li>
-          <a routerLink="/dashboard" routerLinkActive="active">
-            <span class="menu-text">Dashboard</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="/stadiums" routerLinkActive="active">
-            <span class="menu-text">Stadiums</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink="/my-bookings" routerLinkActive="active">
-            <span class="menu-text">My Bookings</span>
-          </a>
-        </li>
-      </ul>
+    <!-- LOGO PRO -->
+    <a routerLink="/" class="navbar-brand">
+      <div class="brand-icon">FR</div>
+      <span class="brand-text">FootReserve</span>
+    </a>
 
-      <!-- Menu pour visiteur non connecté -->
-      <ul class="navbar-menu" *ngIf="!isLoggedIn">
-        <li>
-          <a routerLink="/stadiums" routerLinkActive="active">
-            <span class="menu-text">Stadiums</span>
-          </a>
-        </li>
-      </ul>
+    <!-- ================= MENU ================= -->
 
-      <!-- Auth buttons for non-logged in users -->
-      <div *ngIf="!isLoggedIn" class="auth-buttons-horizontal">
-        <a routerLink="/login" class="btn btn-secondary">Sign In</a>
-        <a routerLink="/register" class="btn btn-primary">Sign Up</a>
-      </div>
-    </div>
+    <!-- ADMIN -->
+    <ul class="navbar-menu" *ngIf="isAdmin">
+      <li>
+        <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+      </li>
+      <li>
+        <a routerLink="/admin/stadium/create" routerLinkActive="active">Add Stadium</a>
+      </li>
+      <li>
+        <a routerLink="/stadiums" routerLinkActive="active">All Stadiums</a>
+      </li>
+      <li>
+        <a routerLink="/admin/reservations" routerLinkActive="active">Bookings</a>
+      </li>
+    </ul>
 
-    <!-- Right section for logged in users -->
+    <!-- USER -->
+    <ul class="navbar-menu" *ngIf="!isAdmin && isLoggedIn">
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      </li>
+      <li>
+        <a routerLink="/stadiums" routerLinkActive="active">Stadiums</a>
+      </li>
+      <li>
+        <a routerLink="/my-bookings" routerLinkActive="active">My Bookings</a>
+      </li>
+    </ul>
+
+    <!-- VISITOR -->
+    <ul class="navbar-menu" *ngIf="!isLoggedIn">
+      <li>
+        <a routerLink="/stadiums" routerLinkActive="active">Stadiums</a>
+      </li>
+      <li>
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      </li>
+      <li>
+        <a routerLink="/register" routerLinkActive="active">Register</a>
+      </li>
+    </ul>
+
+    <!-- ================= USER ACTIONS ================= -->
     <div class="navbar-right" *ngIf="isLoggedIn">
       <div class="user-profile">
         <div class="user-avatar">
           {{ currentUser?.username?.charAt(0)?.toUpperCase() || 'U' }}
         </div>
       </div>
-      <button (click)="logout()" class="btn btn-logout">Logout</button>
+
+      <button class="btn-logout" (click)="logout()">Logout</button>
     </div>
+
   </div>
 </nav>
