@@ -1,6 +1,6 @@
-// src/app/components/stadium-list/stadium-list.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StadiumService } from '../../services/stadium.service';
 import { Stadium } from '../../models/stadium.model';
@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-stadium-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './stadium-list.component.html',
   styleUrls: ['./stadium-list.component.css']
 })
@@ -17,6 +17,10 @@ export class StadiumListComponent implements OnInit {
   stadiums: Stadium[] = [];
   loading: boolean = false;
   errorMessage: string = '';
+
+  // Filtres
+  searchTerm: string = '';
+  filterAvailable: boolean | null = null;
 
   constructor(
     private stadiumService: StadiumService,
@@ -45,9 +49,24 @@ export class StadiumListComponent implements OnInit {
     });
   }
 
+  get filteredStadiums(): Stadium[] {
+    return this.stadiums.filter(stadium => {
+      // Filtre par recherche
+      const matchesSearch = this.searchTerm.trim() === '' ||
+        stadium.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        stadium.location.toLowerCase().includes(this.searchTerm.toLowerCase());
+
+      // Filtre par disponibilité
+      const matchesAvailability = this.filterAvailable === null ||
+        stadium.available === this.filterAvailable;
+
+      return matchesSearch && matchesAvailability;
+    });
+  }
+
   reserveStadium(stadium: Stadium): void {
     if (!this.authService.isLoggedIn()) {
-      alert('Veuillez vous connecter pour réserver un stade');
+      alert('Please sign in to book a stadium');
       this.router.navigate(['/login']);
       return;
     }
@@ -63,14 +82,14 @@ export class StadiumListComponent implements OnInit {
   }
 
   deleteStadium(stadium: Stadium): void {
-    if (confirm(`Êtes-vous sûr de vouloir supprimer le stade "${stadium.name}" ?`)) {
+    if (confirm(`Are you sure you want to delete "${stadium.name}"?`)) {
       this.stadiumService.deleteStadium(stadium.id!).subscribe({
         next: () => {
-          alert('Stade supprimé avec succès');
+          alert('Stadium deleted successfully');
           this.loadStadiums();
         },
         error: (error) => {
-          alert('Erreur lors de la suppression: ' + error.message);
+          alert('Error deleting stadium: ' + error.message);
         }
       });
     }

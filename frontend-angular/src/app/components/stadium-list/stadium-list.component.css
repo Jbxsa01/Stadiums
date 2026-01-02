@@ -1,114 +1,126 @@
-.price-badge {
-  top: 15px;
-  left: 15px;
-  right: auto;
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-  color: #222;
-  font-size: 15px;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(67, 233, 123, 0.15);
-  z-index: 2;
+.stadium-list-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 24px;
 }
 
-.stadium-title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #222;
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  gap: 24px;
+}
+
+.header-content h1 {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  color: var(--text-dark);
   margin-bottom: 8px;
 }
 
-.location {
-  color: #666;
-  font-size: 15px;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-}
-
-.location-icon {
-  margin-right: 5px;
-  font-size: 1.1em;
-}
-
-.book-btn {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-  color: #222;
-  font-size: 1.1em;
-  font-weight: 700;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(67, 233, 123, 0.15);
-  margin-bottom: 0.5em;
-  padding: 12px 0;
-  width: 100%;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
-}
-.book-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #38f9d7 0%, #43e97b 100%);
-  color: #111;
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 6px 18px rgba(67, 233, 123, 0.18);
-}
-/* src/app/components/stadium-list/stadium-list.component.css */
-.stadium-list-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.header h1 {
-  font-size: 32px;
-  color: #333;
-  margin: 0;
-}
-
-.loading {
-  text-align: center;
-  padding: 40px;
+.subtitle {
   font-size: 18px;
-  color: #666;
+  color: var(--text-light);
+  font-weight: 500;
 }
 
-.alert {
-  padding: 15px;
+.filters-section {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  fill: var(--text-light);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--white);
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: var(--shadow-md);
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 12px;
+  background: var(--white);
+  padding: 6px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  border: none;
   border-radius: 8px;
-  margin-bottom: 20px;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
-.alert-danger {
-  background-color: #fee;
-  color: #c33;
-  border: 1px solid #fcc;
+.filter-btn.active {
+  background: linear-gradient(135deg, var(--primary-green), var(--grass-green));
+  color: var(--white);
+}
+
+.filter-btn:hover:not(.active) {
+  background: var(--bg-light);
+  color: var(--primary-green);
 }
 
 .stadium-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 32px;
 }
 
 .stadium-card {
-  background: white;
-  border-radius: 12px;
+  background: var(--white);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
 }
 
 .stadium-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
 
 .stadium-image {
   position: relative;
-  height: 200px;
+  height: 240px;
   overflow: hidden;
 }
 
@@ -116,137 +128,228 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
 }
 
-.badge {
+.stadium-card:hover .stadium-image img {
+  transform: scale(1.1);
+}
+
+.image-overlay {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.badge.available {
-  background-color: #4caf50;
-  color: white;
-}
-
-.badge.unavailable {
-  background-color: #f44336;
-  color: white;
-}
-
-.stadium-content {
-  padding: 20px;
-}
-
-.stadium-content h3 {
-  margin: 0 0 10px 0;
-  font-size: 22px;
-  color: #333;
-}
-
-.location {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.description {
-  color: #777;
-  font-size: 14px;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.stadium-footer {
-  border-top: 1px solid #eee;
-  padding-top: 15px;
-}
-
-.price {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 50%, rgba(0,0,0,0.4) 100%);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
+  align-items: flex-start;
+  padding: 16px;
 }
 
-.price-label {
-  color: #666;
-  font-size: 14px;
+.availability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(10px);
+}
+
+.availability-badge.available {
+  background: rgba(46, 204, 113, 0.95);
+  color: var(--white);
+}
+
+.availability-badge:not(.available) {
+  background: rgba(231, 76, 60, 0.95);
+  color: var(--white);
+}
+
+.badge-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.price-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
 }
 
 .price-value {
-  font-size: 20px;
-  font-weight: 700;
-  color: #667eea;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary-green);
+  line-height: 1;
 }
 
-.actions {
+.price-unit {
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.stadium-content {
+  padding: 24px;
+}
+
+.stadium-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.stadium-location {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 16px;
+}
+
+.location-icon {
+  width: 18px;
+  height: 18px;
+  fill: var(--primary-green);
+  flex-shrink: 0;
+}
+
+.stadium-description {
+  font-size: 15px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.stadium-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-book {
+  flex: 1;
 }
 
 .admin-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
-.btn {
-  padding: 10px 20px;
+.btn-icon {
+  width: 44px;
+  height: 44px;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+.btn-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
-.btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+.btn-edit {
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498DB;
 }
 
-.btn-primary:disabled {
-  background: #ccc;
-  cursor: not-allowed;
+.btn-edit:hover {
+  background: #3498DB;
 }
 
-.btn-success {
-  background-color: #4caf50;
-  color: white;
+.btn-edit:hover svg {
+  fill: var(--white);
 }
 
-.btn-success:hover {
-  background-color: #45a049;
+.btn-delete {
+  background: rgba(231, 76, 60, 0.1);
+  color: var(--status-cancelled);
 }
 
-.btn-sm {
-  padding: 6px 12px;
-  font-size: 12px;
+.btn-delete:hover {
+  background: var(--status-cancelled);
 }
 
-.btn-warning {
-  background-color: #ff9800;
-  color: white;
+.btn-delete:hover svg {
+  fill: var(--white);
 }
 
-.btn-danger {
-  background-color: #f44336;
-  color: white;
-}
-
-.no-data {
+.loading-state {
   text-align: center;
-  padding: 60px 20px;
-  color: #999;
-  font-size: 18px;
+  padding: 80px 20px;
+}
+
+.loading-state p {
+  margin-top: 20px;
+  font-size: 16px;
+  color: var(--text-light);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-icon {
+  width: 80px;
+  height: 80px;
+  fill: var(--text-light);
+  opacity: 0.5;
+  margin-bottom: 24px;
+}
+
+.empty-state h3 {
+  font-size: 24px;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  font-size: 16px;
+  color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+  }
+
+  .filters-section {
+    flex-direction: column;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .filter-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stadium-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -5,7 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { RegisterRequest, LoginRequest, AuthResponse } from '../models/user.model';
-import {environment} from "../environments/environment";
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,10 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<AuthResponse | null>;
   public currentUser: Observable<AuthResponse | null>;
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     let storedUser: string | null = null;
     if (isPlatformBrowser(this.platformId)) {
       storedUser = localStorage.getItem('currentUser');
@@ -31,16 +34,18 @@ export class AuthService {
   }
 
   register(request: RegisterRequest): Observable<AuthResponse> {
+    // ✅ CORRIGÉ : Utilisation correcte des backticks
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, request)
       .pipe(
         tap(response => {
-          console.log('Registration successful:', response);
+          console.log('✅ Registration successful:', response);
         }),
         catchError(this.handleError)
       );
   }
 
   login(request: LoginRequest): Observable<AuthResponse> {
+    // ✅ CORRIGÉ : Utilisation correcte des backticks
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, request)
       .pipe(
         tap(response => {
@@ -49,13 +54,14 @@ export class AuthService {
             localStorage.setItem('currentUser', JSON.stringify(response));
           }
           this.currentUserSubject.next(response);
-          console.log('Login successful:', response);
+          console.log('✅ Login successful:', response);
         }),
         catchError(this.handleError)
       );
   }
 
   logout(userId: number): Observable<string> {
+    // ✅ CORRIGÉ : Utilisation correcte des backticks
     return this.http.post<string>(`${this.apiUrl}/logout/${userId}`, {})
       .pipe(
         tap(() => {
@@ -63,7 +69,7 @@ export class AuthService {
             localStorage.removeItem('currentUser');
           }
           this.currentUserSubject.next(null);
-          console.log('Logout successful');
+          console.log('✅ Logout successful');
         }),
         catchError(this.handleError)
       );
@@ -94,7 +100,7 @@ export class AuthService {
       }
     }
 
-    console.error('Auth Error:', errorMessage);
+    console.error('❌ Auth Error:', errorMessage);
     return throwError(() => new Error(errorMessage));
   }
 }

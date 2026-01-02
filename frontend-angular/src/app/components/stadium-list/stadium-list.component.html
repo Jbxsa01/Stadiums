@@ -1,54 +1,111 @@
-<!-- src/app/components/stadium-list/stadium-list.component.html -->
-<div class="stadium-list-container">
-  <div class="header">
-    <h1>Stades Disponibles</h1>
-    <button *ngIf="isAdmin()" class="btn btn-success" routerLink="/admin/stadium/create">
-      + Ajouter un stade
+<div class="stadium-list-container fade-in">
+  <div class="page-header">
+    <div class="header-content">
+      <h1>Available Stadiums</h1>
+      <p class="subtitle">Find the perfect field for your next match</p>
+    </div>
+    <button *ngIf="isAdmin()" class="btn btn-primary" routerLink="/admin/stadium/create">
+      <svg viewBox="0 0 24 24" fill="currentColor" class="icon">
+        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      </svg>
+      Add Stadium
     </button>
   </div>
 
-  <div *ngIf="loading" class="loading">
-    <p>Chargement des stades...</p>
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="currentColor" class="search-icon">
+        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+      <input
+        type="text"
+        placeholder="Search by name or location..."
+        class="search-input"
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+    <div class="filter-buttons">
+      <button class="filter-btn" [class.active]="filterAvailable === null" (click)="filterAvailable = null">
+        All Stadiums
+      </button>
+      <button class="filter-btn" [class.active]="filterAvailable === true" (click)="filterAvailable = true">
+        Available Only
+      </button>
+    </div>
   </div>
 
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Loading stadiums...</p>
+  </div>
+
+  <!-- Error State -->
   <div *ngIf="errorMessage" class="alert alert-danger">
+    <svg viewBox="0 0 24 24" fill="currentColor" class="icon">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+    </svg>
     {{ errorMessage }}
   </div>
 
-  <div class="stadium-grid" *ngIf="!loading && stadiums.length > 0">
-    <div class="stadium-card" *ngFor="let stadium of stadiums">
+  <!-- Stadium Grid -->
+  <div class="stadium-grid" *ngIf="!loading && filteredStadiums.length > 0">
+    <div class="stadium-card" *ngFor="let stadium of filteredStadiums">
+      <!-- Image Section -->
       <div class="stadium-image">
-        <img [src]="stadium.imageUrl" [alt]="stadium.name" />
-        <span class="badge price-badge">
-          {{ stadium.pricePerHour }} DH/hr
-        </span>
-        <span class="badge" [class.available]="stadium.available" [class.unavailable]="!stadium.available">
-          {{ stadium.available ? 'Disponible' : 'Non disponible' }}
-        </span>
+        <img [src]="stadium.imageUrl" [alt]="stadium.name" loading="lazy" />
+        <div class="image-overlay">
+          <span class="availability-badge" [class.available]="stadium.available">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="badge-icon">
+              <path *ngIf="stadium.available" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <path *ngIf="!stadium.available" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            {{ stadium.available ? 'Available' : 'Booked' }}
+          </span>
+          <div class="price-badge">
+            <span class="price-value">{{ stadium.pricePerHour }}</span>
+            <span class="price-unit">DH/hr</span>
+          </div>
+        </div>
       </div>
 
+      <!-- Content Section -->
       <div class="stadium-content">
-        <h3 class="stadium-title">{{ stadium.name }}</h3>
-        <p class="location">
-          <span class="location-icon">📍</span> {{ stadium.location }}
-        </p>
-        <p class="description">{{ stadium.description }}</p>
+        <h3 class="stadium-name">{{ stadium.name }}</h3>
 
-        <div class="actions">
+        <p class="stadium-location">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="location-icon">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+          {{ stadium.location }}
+        </p>
+
+        <p class="stadium-description">{{ stadium.description }}</p>
+
+        <!-- Actions -->
+        <div class="stadium-actions">
           <button
-            class="btn btn-success book-btn"
+            class="btn btn-primary btn-book"
             (click)="reserveStadium(stadium)"
             [disabled]="!stadium.available"
           >
-            Book Now
+            <svg viewBox="0 0 24 24" fill="currentColor" class="icon">
+              <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+            </svg>
+            {{ stadium.available ? 'Book Now' : 'Not Available' }}
           </button>
 
           <div *ngIf="isAdmin()" class="admin-actions">
-            <button class="btn btn-sm btn-warning" (click)="editStadium(stadium)">
-              ✏️ Modifier
+            <button class="btn-icon btn-edit" (click)="editStadium(stadium)" title="Edit">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+              </svg>
             </button>
-            <button class="btn btn-sm btn-danger" (click)="deleteStadium(stadium)">
-              🗑️ Supprimer
+            <button class="btn-icon btn-delete" (click)="deleteStadium(stadium)" title="Delete">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              </svg>
             </button>
           </div>
         </div>
@@ -56,7 +113,12 @@
     </div>
   </div>
 
-  <div *ngIf="!loading && stadiums.length === 0" class="no-data">
-    <p>Aucun stade disponible pour le moment.</p>
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredStadiums.length === 0" class="empty-state">
+    <svg viewBox="0 0 24 24" fill="currentColor" class="empty-icon">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+    </svg>
+    <h3>No Stadiums Found</h3>
+    <p>Try adjusting your search or filters</p>
   </div>
 </div>

@@ -1,116 +1,259 @@
-/* src/app/components/register/register.component.css */
-.register-container {
+.reservation-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  background: linear-gradient(135deg, #0a3d2c 0%, #16a085 50%, #27ae60 100%);
+  padding: 60px 20px;
 }
 
-.register-card {
-  background: white;
+.reservation-card {
+  background: var(--white);
   padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  max-width: 450px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  max-width: 700px;
   width: 100%;
+  animation: slideIn 0.5s ease-out;
 }
 
-.register-card h2 {
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reservation-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #f39c12, #e67e22, #f39c12);
+  border-radius: 20px 20px 0 0;
+}
+
+.reservation-card h2 {
   text-align: center;
-  margin-bottom: 30px;
-  color: #333;
-  font-size: 28px;
+  margin-bottom: 32px;
+  color: var(--gray-dark);
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #16a085, #27ae60);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* Info stade */
+.stadium-info {
+  background: linear-gradient(135deg, rgba(22, 160, 133, 0.08), rgba(39, 174, 96, 0.08));
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  border-left: 5px solid var(--primary-green);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stadium-info h3 {
+  margin: 0 0 12px 0;
+  color: var(--gray-dark);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.stadium-info .location {
+  color: #666;
+  margin: 8px 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stadium-info .price-info {
+  color: var(--primary-green);
+  font-weight: 700;
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
+
+/* Form */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 8px;
   color: #555;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .form-control {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.3s;
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  background: #fafafa;
 }
 
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(22, 160, 133, 0.1);
+  background: var(--white);
 }
 
-.alert {
-  padding: 12px;
-  border-radius: 6px;
-  margin-bottom: 20px;
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
+.file-info {
+  display: block;
+  margin-top: 8px;
+  color: var(--grass-green);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Calcul prix */
+.price-calculation {
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.1), rgba(22, 160, 133, 0.1));
+  padding: 24px;
+  border-radius: 12px;
+  margin: 24px 0;
+  text-align: center;
+  border: 3px solid var(--grass-green);
+  box-shadow: 0 4px 16px rgba(39, 174, 96, 0.15);
+}
+
+.price-calculation h4 {
+  margin: 0 0 12px 0;
+  color: var(--dark-green);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.total-price {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--grass-green);
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.total-price::after {
+  content: ' DH';
+  font-size: 1.5rem;
+  color: var(--dark-green);
+}
+
+/* Alerts */
 .alert-danger {
-  background-color: #fee;
+  background: linear-gradient(135deg, #fee, #fdd);
   color: #c33;
-  border: 1px solid #fcc;
+  border: 2px solid #fcc;
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  font-weight: 500;
 }
 
-.alert-success {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #4caf50;
+/* Actions */
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
 }
 
 .btn {
-  width: 100%;
-  padding: 12px;
+  flex: 1;
+  padding: 14px 24px;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, #16a085, #27ae60);
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(22, 160, 133, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #27ae60, #16a085);
   transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 24px rgba(22, 160, 133, 0.4);
+}
+
+.btn-secondary {
+  background: var(--gray-medium);
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(149, 165, 166, 0.3);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--gray-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(149, 165, 166, 0.4);
 }
 
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none !important;
 }
 
-.login-link {
-  text-align: center;
-  margin-top: 20px;
-}
+/* Responsive */
+@media (max-width: 768px) {
+  .reservation-container {
+    padding: 40px 20px;
+  }
 
-.login-link p {
-  color: #666;
-  font-size: 14px;
-}
+  .reservation-card {
+    padding: 32px 24px;
+  }
 
-.login-link a {
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 600;
-  cursor: pointer;
-}
+  .reservation-card h2 {
+    font-size: 1.75rem;
+  }
 
-.login-link a:hover {
-  text-decoration: underline;
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .total-price {
+    font-size: 2.5rem;
+  }
+
+  .stadium-info {
+    padding: 20px;
+  }
+
+  .stadium-info h3 {
+    font-size: 1.3rem;
+  }
 }

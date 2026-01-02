@@ -1,36 +1,174 @@
-<div class="my-bookings-container">
-  <h2>My Bookings</h2>
-  <div class="bookings-toolbar">
-    <input class="search-input" type="text" placeholder="Search by stadium or name..." [(ngModel)]="searchTerm" />
-    <div class="status-filters">
-      <button class="status-btn" [class.active]="statusFilter === 'ALL'" (click)="setStatusFilter('ALL')">SHOW ALL</button>
-      <button class="status-btn" [class.active]="statusFilter === 'EN_ATTENTE'" (click)="setStatusFilter('EN_ATTENTE')">EN_ATTENTE</button>
-      <button class="status-btn" [class.active]="statusFilter === 'CONFIRMEE'" (click)="setStatusFilter('CONFIRMEE')">CONFIRMÉE</button>
-      <button class="status-btn" [class.active]="statusFilter === 'ANNULEE'" (click)="setStatusFilter('ANNULEE')">ANNULÉE</button>
+<div class="bookings-container fade-in">
+  <div class="page-header">
+    <div class="header-content">
+      <h1>My Reservations</h1>
+      <p class="subtitle">Manage your bookings and download tickets</p>
     </div>
   </div>
-  <div *ngIf="loading" class="loading">Loading your reservations...</div>
-  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-  <div *ngIf="!loading && reservations.length === 0" class="no-data">No bookings found.</div>
-  <div *ngIf="!loading && filteredReservations.length > 0" class="bookings-cards">
+
+  <!-- Filters -->
+  <div class="bookings-filters">
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="currentColor" class="search-icon">
+        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+      </svg>
+      <input
+        type="text"
+        placeholder="Search by stadium..."
+        class="search-input"
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+
+    <div class="status-tabs">
+      <button
+        class="status-tab"
+        [class.active]="statusFilter === 'ALL'"
+        (click)="setStatusFilter('ALL')"
+      >
+        All
+      </button>
+      <button
+        class="status-tab status-pending"
+        [class.active]="statusFilter === 'EN_ATTENTE'"
+        (click)="setStatusFilter('EN_ATTENTE')"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" class="tab-icon">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+        </svg>
+        Pending
+      </button>
+      <button
+        class="status-tab status-confirmed"
+        [class.active]="statusFilter === 'CONFIRMEE'"
+        (click)="setStatusFilter('CONFIRMEE')"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" class="tab-icon">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        Confirmed
+      </button>
+      <button
+        class="status-tab status-cancelled"
+        [class.active]="statusFilter === 'ANNULEE'"
+        (click)="setStatusFilter('ANNULEE')"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" class="tab-icon">
+          <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+        </svg>
+        Cancelled
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Loading your reservations...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <svg viewBox="0 0 24 24" fill="currentColor" class="icon">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+    </svg>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Bookings Grid -->
+  <div class="bookings-grid" *ngIf="!loading && filteredReservations.length > 0">
     <div class="booking-card" *ngFor="let reservation of filteredReservations">
-      <div class="booking-card-header">
-        <div class="stadium-name">
-          {{ getStadiumById(reservation.stadeId)?.name || 'Stadium #' + reservation.stadeId }}
-        </div>
-        <div class="booking-status">
-          <span [class]="'status-badge ' + (reservation.statut || '').toLowerCase()">{{ reservation.statut }}</span>
+      <!-- Stadium Image -->
+      <div class="booking-image">
+        <img [src]="getStadiumById(reservation.stadeId)?.imageUrl"
+             [alt]="getStadiumById(reservation.stadeId)?.name"
+             loading="lazy" />
+        <div class="status-overlay">
+          <span class="status-badge" [class]="reservation.statut?.toLowerCase()">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="badge-icon">
+              <path *ngIf="reservation.statut === 'CONFIRMEE'" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <path *ngIf="reservation.statut === 'EN_ATTENTE'" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+              <path *ngIf="reservation.statut === 'ANNULEE'" d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+            </svg>
+            {{ reservation.statut }}
+          </span>
         </div>
       </div>
-      <div class="booking-card-body">
-        <div class="booking-info">
-          <div><b>Date:</b> {{ reservation.date }}</div>
-          <div><b>Time:</b> {{ reservation.heureDebut }} - {{ reservation.heureFin }}</div>
+
+      <!-- Booking Details -->
+      <div class="booking-content">
+        <h3 class="booking-stadium">
+          {{ getStadiumById(reservation.stadeId)?.name || 'Stadium #' + reservation.stadeId }}
+        </h3>
+
+        <div class="booking-details">
+          <div class="detail-item">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="detail-icon">
+              <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+            </svg>
+            <div>
+              <p class="detail-label">Date</p>
+              <p class="detail-value">{{ reservation.date }}</p>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="detail-icon">
+              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+            </svg>
+            <div>
+              <p class="detail-label">Time</p>
+              <p class="detail-value">{{ reservation.heureDebut }} - {{ reservation.heureFin }}</p>
+            </div>
+          </div>
+
+          <div class="detail-item">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="detail-icon">
+              <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+            </svg>
+            <div>
+              <p class="detail-label">Price</p>
+              <p class="detail-value price-highlight">{{ reservation.prix || 'N/A' }} DH</p>
+            </div>
+          </div>
         </div>
+
+        <!-- Actions -->
         <div class="booking-actions">
-          <button class="btn btn-ticket" (click)="downloadTicket(reservation)">🎟️ Ticket PDF</button>
+          <button
+            class="btn btn-primary btn-ticket"
+            (click)="downloadTicket(reservation)"
+            *ngIf="reservation.statut === 'CONFIRMEE'"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" class="icon">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            Download Ticket
+          </button>
+          <button
+            class="btn btn-secondary"
+            *ngIf="reservation.statut === 'EN_ATTENTE'"
+            disabled
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" class="icon">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+            </svg>
+            Awaiting Approval
+          </button>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && filteredReservations.length === 0" class="empty-state">
+    <svg viewBox="0 0 24 24" fill="currentColor" class="empty-icon">
+      <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+    </svg>
+    <h3>No Reservations Found</h3>
+    <p>You haven't made any bookings yet</p>
+    <button class="btn btn-primary" routerLink="/stadiums">
+      Browse Stadiums
+    </button>
   </div>
 </div>
